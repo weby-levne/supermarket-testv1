@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#151a1e">
+  <title>Store Empire</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Store Empire domů"><span class="brand-mark">SE</span><span>STORE <b>EMPIRE</b><small>RETAIL MANAGEMENT</small></span></a>
+    <div class="top-stats">
+      <div><small>HOTOVOST</small><strong id="cash">25 000 Kč</strong></div>
+      <div><small>DNEŠNÍ TRŽBY</small><strong id="revenue">0 Kč</strong></div>
+      <div><small>DEN</small><strong id="day">1</strong></div>
+    </div>
+    <button id="saveBtn" class="top-action">Uložit hru</button>
+  </header>
+
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="store-status"><span class="status-dot"></span> PRODEJNA OTEVŘENA</div>
+      <button class="nav-btn active" data-view="overview"><span>▦</span>Přehled</button>
+      <button class="nav-btn" data-view="products"><span>▤</span>Produkty a ceny</button>
+      <button class="nav-btn" data-view="suppliers"><span>⇄</span>Dodavatelé</button>
+      <button class="nav-btn" data-view="orders"><span>▣</span>Objednávky <i id="orderCount">0</i></button>
+      <button class="nav-btn" data-view="expansion"><span>↗</span>Rozvoj obchodu</button>
+      <div class="sidebar-bottom">
+        <div class="day-label">SIMULACE</div>
+        <button id="nextDayBtn" class="primary-btn">Ukončit den <span>→</span></button>
+        <p>Tvůj obchod. Tvoje rozhodnutí.</p>
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <div class="page-heading">
+        <div><p class="eyebrow">HLAVNÍ PANEL / PROVOZ</p><h1 id="pageTitle">Přehled prodejny</h1><p id="pageSubtitle">Kontroluj provoz a rozhoduj, kam obchod posuneš dál.</p></div>
+        <div class="open-badge"><span class="status-dot"></span> Otevřeno</div>
+      </div>
+
+      <section id="overviewView" class="view">
+        <div class="hero-grid">
+          <article class="scene-card">
+            <div class="scene-overlay">
+              <span class="scene-tag">PRODEJNA 01 · MALÝ OBCHOD</span>
+              <h2>Dobré podnikání<br>začíná v regálech.</h2>
+              <p>Udržuj zboží skladem, nastav správné ceny a získej stálé zákazníky.</p>
+              <button class="light-btn" data-goto="products">Spravovat produkty <span>↗</span></button>
+            </div>
+            <div class="store-scene" id="storeScene" aria-label="Jednoduchá 3D vizualizace obchodu">
+              <div class="scene-ceiling"></div><div class="scene-backwall"></div>
+              <div class="scene-shelf shelf-one"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="scene-shelf shelf-two"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="scene-counter"><b>POKLADNA</b></div>
+              <div class="scene-person person-one"></div><div class="scene-person person-two"></div>
+              <div class="scene-floor"></div>
+              <div class="scene-caption">NÁHLED PRODEJNY · 3D STYLIZOVANÁ SCÉNA</div>
+            </div>
+          </article>
+          <article class="quick-card">
+            <div class="card-head"><div><p class="eyebrow">RYCHLÝ PŘEHLED</p><h3>Stav podnikání</h3></div><span class="live-pill">LIVE</span></div>
+            <div class="quick-metric"><span>Odhadovaná hodnota skladu</span><strong id="stockValue">0 Kč</strong></div>
+            <div class="quick-metric"><span>Počet produktů</span><strong id="productCount">0</strong></div>
+            <div class="quick-metric"><span>Čekající objednávky</span><strong id="pendingOrders">0</strong></div>
+            <div class="quick-metric"><span>Spokojenost zákazníků</span><strong><span id="satisfaction">78</span><small> / 100</small></strong></div>
+            <div class="satisfaction-bar"><span id="satisfactionBar"></span></div>
+            <div class="quick-footer"><span class="status-dot"></span> Obchod je připraven na další den</div>
+          </article>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card"><span class="metric-icon">↗</span><small>TRŽBY DNES</small><strong id="metricRevenue">0 Kč</strong><span id="revenueHint" class="muted">Zatím bez prodejů</span></article>
+          <article class="metric-card"><span class="metric-icon">−</span><small>NÁKLADY DNES</small><strong id="metricCosts">0 Kč</strong><span class="muted">Provoz a prodané zboží</span></article>
+          <article class="metric-card"><span class="metric-icon">◎</span><small>ČISTÝ VÝSLEDEK DNES</small><strong id="metricProfit">0 Kč</strong><span class="muted">Tržby minus náklady</span></article>
+          <article class="metric-card"><span class="metric-icon">♙</span><small>ZÁKAZNÍCI DNES</small><strong id="customers">0</strong><span class="muted">Simulovaná poptávka</span></article>
+        </div>
+
+        <div class="lower-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">SKLAD</p><h3>Produkty, které potřebují pozornost</h3></div><button class="text-btn" data-goto="products">Všechny produkty →</button></div>
+            <div id="lowStockList" class="stock-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">AKTIVITY</p><h3>Provozní záznamy</h3></div><span class="muted">Poslední události</span></div>
+            <div id="activityList" class="activity-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="productsView" class="view hidden">
+        <div class="toolbar"><div><h2>Sortiment a cenotvorba</h2><p>Nastav prodejní ceny a sleduj dostupnost zboží.</p></div><button id="restockLowBtn" class="secondary-btn">Doplnit kritické zásoby</button></div>
+        <div class="table-wrap"><table><thead><tr><th>PRODUKT</th><th>DODAVATEL</th><th>SKLADEM</th><th>NÁKUPNÍ CENA</th><th>PRODEJNÍ CENA</th><th>MARŽE</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+        <p class="hint">Ceny ovlivňují poptávku. Příliš vysoká cena může snížit počet zákazníků.</p>
+      </section>
+
+      <section id="suppliersView" class="view hidden">
+        <div class="toolbar"><div><h2>Dodavatelé</h2><p>Porovnávej ceny, spolehlivost a sortiment.</p></div></div>
+        <div id="suppliersGrid" class="supplier-grid"></div>
+      </section>
+
+      <section id="ordersView" class="view hidden">
+        <div class="toolbar"><div><h2>Objednávky zboží</h2><p>Vyber dodavatele, množství a potvrď objednávku. Zboží dorazí následující herní den.</p></div></div>
+        <div class="order-create panel">
+          <div class="field"><label for="orderSupplier">Dodavatel</label><select id="orderSupplier"></select></div>
+          <div class="field"><label for="orderProduct">Produkt</label><select id="orderProduct"></select></div>
+          <div class="field"><label for="orderQty">Počet kusů</label><input id="orderQty" type="number" min="1" max="500" value="24"></div>
+          <div class="field order-total"><label>Celková cena</label><strong id="orderTotal">0 Kč</strong></div>
+          <button id="placeOrderBtn" class="primary-btn">Potvrdit objednávku →</button>
+        </div>
+        <div class="panel"><div class="panel-heading"><div><p class="eyebrow">LOGISTIKA</p><h3>Historie objednávek</h3></div></div><div class="table-wrap"><table><thead><tr><th>OBJEDNÁVKA</th><th>DODAVATEL</th><th>POLOŽKA</th><th>KS</th><th>CENA</th><th>STAV</th></tr></thead><tbody id="ordersTable"></tbody></table></div></div>
+      </section>
+
+      <section id="expansionView" class="view hidden">
+        <div class="toolbar"><div><h2>Rozvoj obchodu</h2><p>Investuj do prodejny, až budeš mít dostatečnou rezervu.</p></div></div>
+        <div class="expansion-grid">
+          <article class="upgrade-card"><div class="upgrade-art shelves-art">▤</div><div class="upgrade-body"><span class="upgrade-status" id="shelvesStatus">ÚROVEŇ 1</span><h3>Více regálů</h3><p>Zvýší kapacitu skladu a přiláká více zákazníků.</p><div class="upgrade-bottom"><strong id="shelvesCost">8 000 Kč</strong><button id="upgradeShelves" class="secondary-btn">Vylepšit</button></div></div></article>
+          <article class="upgrade-card"><div class="upgrade-art sign-art">✳</div><div class="upgrade-body"><span class="upgrade-status" id="marketingStatus">ÚROVEŇ 0</span><h3>Reklama v okolí</h3><p>Více lidí se dozví o obchodě. Zvyšuje denní návštěvnost.</p><div class="upgrade-bottom"><strong id="marketingCost">5 000 Kč</strong><button id="upgradeMarketing" class="secondary-btn">Spustit</button></div></div></article>
+          <article class="upgrade-card"><div class="upgrade-art cold-art">▥</div><div class="upgrade-body"><span class="upgrade-status" id="fridgeStatus">ÚROVEŇ 0</span><h3>Chladicí vybavení</h3><p>Omezuje ztráty u rychle se kazících potravin. Další rozšíření přijde později.</p><div class="upgrade-bottom"><strong>6 500 Kč</strong><button id="upgradeFridge" class="secondary-btn">Pořídit</button></div></div></article>
+        </div>
+      </section>
+
+      <footer class="footer"><span>STORE EMPIRE <span class="muted">· PROTOTYP 0.1</span></span><span>Lokální uložená hra · žádné nákupy ve skutečných penězích</span></footer>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modalBackdrop" class="modal-backdrop hidden"><div class="modal"><h2 id="modalTitle">Ukončit den?</h2><p id="modalText">Uzavřeš dnešní provoz.</p><div class="modal-actions"><button id="modalCancel" class="secondary-btn">Zpět</button><button id="modalConfirm" class="primary-btn">Potvrdit</button></div></div></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
